@@ -20,7 +20,7 @@ function getAllTasks() {
           checkbox = $("<input class='checkbox col-xs-1' type='checkbox' checked>") : 
           checkbox = $("<input class='checkbox col-xs-1' type='checkbox'>");
 
-        let newTask = $("<div class='row'></div>");
+        let newTask = $("<div class='task row'></div>");
 
         let removeTaskButton = $("<button class='remove-task-button col-xs-1'>Remove</button>");
 
@@ -28,7 +28,7 @@ function getAllTasks() {
 
         newTask.append(checkbox);
 
-        newTask.append("<div class='task col-xs-4'>" + task.content + "</div>");
+        newTask.append("<div class='col-xs-4'>" + task.content + "</div>");
 
         newTask.append(removeTaskButton);
 
