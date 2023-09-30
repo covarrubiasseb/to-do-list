@@ -14,15 +14,41 @@ function getAllTasks() {
       // On, Success, begin adding Tasks to DOM
       response.tasks.forEach(task => {
 
+        let checkbox;
+
+        task.completed ? 
+          checkbox = $("<input class='checkbox col-xs-1' type='checkbox' checked>") : 
+          checkbox = $("<input class='checkbox col-xs-1' type='checkbox'>");
+
         let newTask = $("<div class='row'></div>");
 
         let removeTaskButton = $("<button class='remove-task-button col-xs-1'>Remove</button>");
 
         $(".tasks-list").append(newTask);
 
+        newTask.append(checkbox);
+
         newTask.append("<div class='task col-xs-4'>" + task.content + "</div>");
 
         newTask.append(removeTaskButton);
+
+        checkbox.on("change", () => {
+
+          // if task is complete, mark as complete
+          if (checkbox[0].checked) {
+
+            markComplete(task.id);
+
+          }
+
+          // if task is not complete, mark as active
+          else {
+
+            markActive(task.id);
+
+          }
+
+        });
 
         removeTaskButton.on("click", () => {
 
@@ -72,10 +98,39 @@ function initTaskListener() {
 
 }
 
-// PUT Task Complete
+// PUT Task Complete (/tasks/:id/mark_complete)
+function markComplete(id) {
 
+  $.ajax({
+    type: 'PUT',
+    url: 'https://fewd-todolist-api.onrender.com/tasks/' + id + '/mark_complete?api_key=324',
+    dataType: 'json',
+    success: function (response, textStatus) {
+      console.log(response);
+    },
+    error: function (request, textStatus, errorMessage) {
+      console.log(errorMessage);
+    }
+  });
 
-// PUT Task Active
+}
+
+// PUT Task Active (/tasks/:id?mark_active)
+function markActive(id) {
+
+  $.ajax({
+    type: 'PUT',
+    url: 'https://fewd-todolist-api.onrender.com/tasks/' + id + '/mark_active?api_key=324',
+    dataType: 'json',
+    success: function (response, textStatus) {
+      console.log(response);
+    },
+    error: function (request, textStatus, errorMessage) {
+      console.log(errorMessage);
+    }
+  });
+
+}
 
 
 // DELETE Task (/tasks/:id)
