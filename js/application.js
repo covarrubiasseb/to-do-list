@@ -1,4 +1,4 @@
-.// GET All Tasks
+// GET All Tasks (/tasks)
 function getAllTasks() {
 
   $.ajax({
@@ -6,7 +6,6 @@ function getAllTasks() {
     url: 'https://fewd-todolist-api.onrender.com/tasks?api_key=324',
     dataType: 'json',
     success: function (response, textStatus) {
-      console.log(response);
       // response is a parsed JavaScript object instead of raw JSON
 
       // Clear Tasks list first
@@ -15,9 +14,24 @@ function getAllTasks() {
       // On, Success, begin adding Tasks to DOM
       response.tasks.forEach(task => {
 
-        $(".tasks-list").append($("<div class='row'>" + task.content + "</div>"));
+        let newTask = $("<div class='row'></div>");
+
+        let removeTaskButton = $("<button class='remove-task-button col-xs-1'>Remove</button>");
+
+        $(".tasks-list").append(newTask);
+
+        newTask.append("<div class='task col-xs-4'>" + task.content + "</div>");
+
+        newTask.append(removeTaskButton);
+
+        removeTaskButton.on("click", () => {
+
+          deleteTask(task.id);
+
+        });
 
       });
+
     },
     error: function (request, textStatus, errorMessage) {
       console.log(errorMessage);
@@ -26,7 +40,7 @@ function getAllTasks() {
 
 }
 
-// POST New Task
+// POST New Task (/tasks)
 function initTaskListener() {
 
   $(".submit-task").on("click", () => {
@@ -54,6 +68,29 @@ function initTaskListener() {
       }
     });
 
+  });
+
+}
+
+// PUT Task Complete
+
+
+// PUT Task Active
+
+
+// DELETE Task (/tasks/:id)
+function deleteTask(id) {
+
+  $.ajax({
+    type: 'DELETE',
+    url: 'https://fewd-todolist-api.onrender.com/tasks/' + id + '?api_key=324',
+    success: function (response, textStatus) {
+      // Get new Tasks list
+      getAllTasks();
+    },
+    error: function (request, textStatus, errorMessage) {
+      console.log(errorMessage);
+    }
   });
 
 }
